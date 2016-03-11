@@ -14,6 +14,7 @@ import java.text.NumberFormat;
 public class MainActivity extends AppCompatActivity {
 
     int quantity = 0;
+    int price;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +40,30 @@ public class MainActivity extends AppCompatActivity {
         display(quantity);
     }
 
+    public int calculatePrice()
+    {
+        price = 5;
+        int totalPrice = quantity * price;
+        return totalPrice;
+    }
+
+    public String createOrderSummary(int price)
+    {
+        String summary = String.format("Name: Craig Morrison\n" +
+                "Quantity: %d\n" +
+                "Total: %s\n" +
+                "Thank you!",
+                quantity,
+                NumberFormat.getCurrencyInstance().format(calculatePrice()));
+        return summary;
+    }
+
     /**
      * This method is called when the order button is clicked.
      */
     public void submitOrder(View view) {
-        int price = quantity * 5;
-        String priceString = "Total: " + NumberFormat.getCurrencyInstance().format(price);
-        priceString += "\nThank you!";
+        price = calculatePrice();
+        String priceString = createOrderSummary(price);
         displayMessage(priceString);
     }
 
@@ -64,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     }*/
 
     private void displayMessage(String message) {
-        TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
-        priceTextView.setText(message);
+        TextView orderSummaryTextView = (TextView) findViewById(R.id.order_summary_text_view);
+        orderSummaryTextView.setText(message);
     }
 }
